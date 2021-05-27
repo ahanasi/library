@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+    <link rel="stylesheet" href="style.css" />
+    <style></style>
+  </head>
+  <body class="mx-auto px-2 min-w-min">
+    <header class="flex items-center justify-between m-10">
+      <h1 class="text-5xl m-5 font-mono">Library App</h1>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold ml-10 py-2 px-4 rounded place-content-center w-max h-min flex-wrap">New Book</button>
+    </header>
+    <main class="flex place-content-center">
+      <section class="bookshelf grid grid-cols-1 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 gap-6 m-10"></section>
+
+      <!-- Card template -->
+      <template id="card">
+        <div class="bg-red-100 p-5 rounded-lg shadow-lg flex flex-col place-content-start min-w-min">
+          <h2 class="book-title text-xl font-bold flex-grow text-gray-800"></h2>
+          <p class="book-author text-gray-700 italic mb-2"></p>
+          <p class="book-pages text-gray-700 inline-flex justify-self-end"></p>
+        </div>
+      </template>
+    </main>
+  </body>
+  <script src="script.js"></script>
+</html>
