@@ -7,7 +7,7 @@ const entryForm = document.getElementById("entryForm");
 const checkbox = document.getElementById("hasRead");
 
 modalBtns.forEach((btn) => {
-  btn.addEventListener("click", (event) => {
+  btn.addEventListener("click", () => {
     modal.classList.toggle("hidden");
     modal.classList.toggle("flex");
   });
@@ -38,6 +38,12 @@ entryForm.addEventListener("submit", function (e) {
   showLibrary();
 });
 
+function deleteBook(btn){
+  myLibrary.splice(btn.dataset.index, 1);
+  clearLibrary();
+  showLibrary();
+}
+
 function setCheckboxVal(book) {
   return checkbox.checked ? (book.hasRead = true) : (book.hasRead = false);
 }
@@ -60,9 +66,13 @@ function clearLibrary() {
 }
 
 function showLibrary() {
-  myLibrary.forEach((book) => {
+  myLibrary.forEach((book, i) => {
     if ("content" in document.createElement("template")) {
       let clone = template.content.cloneNode(true);
+
+      let delBtn = clone.querySelector("button.delete-book");
+      delBtn.setAttribute("data-index", i);
+
       let title = clone.querySelector("h2");
       title.textContent = book.title;
 
