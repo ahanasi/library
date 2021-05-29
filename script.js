@@ -6,20 +6,20 @@ const submitBtn = document.querySelector(".submit-button");
 const entryForm = document.getElementById("entryForm");
 const checkbox = document.getElementById("hasRead");
 
+let myLibrary = [
+  new Book("Test","Me",648,true),
+  new Book("Harry Potter", "J.K. Rowling",500,true),
+  new Book("Twilight","Stephanie Meyer",450,false),
+  new Book("Rhythm of War","Brandon Sanderson",1000,true),
+  new Book("Name of the Wind","Patrick Rothfuss", 1500, true)
+];
+
 modalBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     modal.classList.toggle("hidden");
     modal.classList.toggle("flex");
   });
 });
-
-let myLibrary = [
-  { title: "Test", author: "Me", pages: 500, hasRead: true },
-  { title: "Harry Potter", author: "J.K. Rowling", pages: 500, hasRead: true },
-  { title: "Twilight", author: "Stephanie Meyer", pages: 200, hasRead: false },
-  { title: "Rhythm of War", author: "Brandon Sanderson", pages: 900, hasRead: true },
-  { title: "Name of the Wind", author: "Patrick Rothfuss", pages: 450, hasRead: true },
-];
 
 entryForm.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -38,21 +38,38 @@ entryForm.addEventListener("submit", function (e) {
   showLibrary();
 });
 
-function deleteBook(btn){
-  myLibrary.splice(btn.dataset.index, 1);
-  clearLibrary();
-  showLibrary();
-}
-
-function setCheckboxVal(book) {
-  return checkbox.checked ? (book.hasRead = true) : (book.hasRead = false);
-}
-
 function Book(title, author, pages, hasRead) {
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.hasRead = hasRead;
+}
+
+Book.prototype.setReadStatus = function (status) {
+  this.hasRead = status;
+};
+
+function deleteBook(btn) {
+  myLibrary.splice(btn.dataset.index, 1);
+  clearLibrary();
+  showLibrary();
+}
+
+function toggleReadBtn(btn) {
+  if (btn.textContent == "Read ✅") {
+    myLibrary[btn.dataset.index].setReadStatus(true);
+    btn.textContent = "Not Read ❌";
+  } else {
+    myLibrary[btn.dataset.index].setReadStatus(false);
+    btn.textContent = "Read ✅";
+  }
+
+  btn.classList.toggle("text-green-700");
+  btn.classList.toggle("text-red-700");
+}
+
+function setCheckboxVal(book) {
+  book.setReadStatus(checkbox.checked);
 }
 
 function addBookToLibrary(book) {
@@ -71,7 +88,17 @@ function showLibrary() {
       let clone = template.content.cloneNode(true);
 
       let delBtn = clone.querySelector("button.delete-book");
+      let hasReadBtn = clone.querySelector("button.hasRead");
       delBtn.setAttribute("data-index", i);
+      hasReadBtn.setAttribute("data-index", i);
+
+      if (book.hasRead) {
+        hasReadBtn.textContent = "Not Read ❌";
+        hasReadBtn.classList.toggle("text-green-700");
+        hasReadBtn.classList.toggle("text-red-700");
+      } else {
+        hasReadBtn.textContent = "Read ✅";
+      }
 
       let title = clone.querySelector("h2");
       title.textContent = book.title;
